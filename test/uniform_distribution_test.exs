@@ -32,6 +32,25 @@ defmodule UniformDistributionTest do
     end
   end
 
+  property "is deterministic for the same input" do
+    check all(
+            identifier <- string(:alphanumeric, min_length: 1),
+            member_count <- integer(1..10)
+          ) do
+      members =
+        Enum.map(1..member_count, fn i ->
+          %{node_id: i, status: :alive, name: :"node_#{i}", pid: :pid}
+        end)
+
+      child_spec = %{id: identifier, start: {identifier}}
+
+      result1 = Horde.UniformDistribution.choose_node(child_spec, members)
+      result2 = Horde.UniformDistribution.choose_node(child_spec, members)
+
+      assert result1 == result2
+    end
+  end
+
   property "returns error if no alive nodes are available" do
     member =
       ExUnitProperties.gen all(
