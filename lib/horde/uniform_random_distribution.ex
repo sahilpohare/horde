@@ -9,6 +9,9 @@ defmodule Horde.UniformRandomDistribution do
   @doc """
   Selects a random alive node.
   """
+  @impl true
+  @spec choose_node(Supervisor.child_spec(), [Horde.DistributionStrategy.member()]) ::
+          {:ok, Horde.DistributionStrategy.member()} | {:error, :no_alive_nodes}
   def choose_node(_identifier, members) do
     members
     |> Enum.filter(&match?(%{status: :alive}, &1))
@@ -29,5 +32,7 @@ defmodule Horde.UniformRandomDistribution do
   Quorum checks are not enforced, so the process will be
   (re)started on  both sides of a netsplit.
   """
+  @impl true
+  @spec has_quorum?([Horde.DistributionStrategy.member()]) :: boolean()
   def has_quorum?(_members), do: true
 end

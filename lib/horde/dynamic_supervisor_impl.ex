@@ -104,9 +104,13 @@ defmodule Horde.DynamicSupervisorImpl do
   end
 
   def handle_call(:get_telemetry, _from, state) do
+    members_info = Map.values(state.members_info)
+
     telemetry = %{
       global_supervised_process_count: size_of(state.processes_by_id),
-      local_supervised_process_count: state.local_process_count
+      local_supervised_process_count: state.local_process_count,
+      alive_members_count: Enum.count(members_info, &match?(%{status: :alive}, &1)),
+      total_members_count: length(members_info)
     }
 
     {:reply, telemetry, state}

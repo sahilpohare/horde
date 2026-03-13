@@ -13,7 +13,15 @@ defmodule SupervisorTelemetryPollerTest do
 
     def init(_), do: {:ok, %{}}
 
-    def handle_call(:get_telemetry, _, state), do: {:reply, %{metrics: 1}, state}
+    def handle_call(:get_telemetry, _, state) do
+      {:reply,
+       %{
+         global_supervised_process_count: 2,
+         local_supervised_process_count: 1,
+         alive_members_count: 3,
+         total_members_count: 3
+       }, state}
+    end
   end
 
   setup do

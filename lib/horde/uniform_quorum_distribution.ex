@@ -8,6 +8,9 @@ defmodule Horde.UniformQuorumDistribution do
   """
   require Integer
 
+  @impl true
+  @spec choose_node(Supervisor.child_spec(), [Horde.DistributionStrategy.member()]) ::
+          {:ok, Horde.DistributionStrategy.member()} | {:error, :no_alive_nodes | :quorum_not_met}
   def choose_node(child_spec, members) do
     if has_quorum?(members) do
       Horde.UniformDistribution.choose_node(child_spec, members)
@@ -16,6 +19,8 @@ defmodule Horde.UniformQuorumDistribution do
     end
   end
 
+  @impl true
+  @spec has_quorum?([Horde.DistributionStrategy.member()]) :: boolean() | nil
   def has_quorum?([]), do: false
 
   def has_quorum?(members) do
