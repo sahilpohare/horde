@@ -25,6 +25,8 @@ defmodule Horde.NodeListenerBehaviour do
   @doc "Called when a node goes down."
   @callback handle_nodedown(node :: node(), cluster :: atom()) :: atom()
 
+  @optional_callbacks handle_nodeup: 2, handle_nodedown: 2
+
   defmacro __using__(_opts) do
     quote do
       @behaviour Horde.NodeListenerBehaviour
@@ -39,7 +41,7 @@ defmodule Horde.NodeListenerBehaviour do
 
       # --- Behaviour defaults ---
 
-      @impl Horde.NodeListenerBehaviour
+      @impl GenServer
       def init(cluster) do
         :net_kernel.monitor_nodes(true, node_type: :visible)
         {:ok, cluster}
