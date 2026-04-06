@@ -14,7 +14,7 @@ defmodule Horde.MixProject do
       docs: docs(),
       package: package(),
       name: "Horde",
-      source_url: "https://github.com/sahilpohare/horde",
+      source_url: "https://github.com/elixir-horde/horde",
       aliases: [
         test: "test --no-start"
       ]
