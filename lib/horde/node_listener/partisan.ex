@@ -1,4 +1,5 @@
-defmodule Horde.NodeListener.Partisan do
+if Code.ensure_loaded?(:partisan_peer_service) do
+  defmodule Horde.NodeListener.Partisan do
     @moduledoc """
     A Horde node listener for Partisan-based clusters.
 
@@ -51,4 +52,5 @@ defmodule Horde.NodeListener.Partisan do
       handle_nodedown(node, cluster)
       {:noreply, cluster}
     end
+  end
 end
